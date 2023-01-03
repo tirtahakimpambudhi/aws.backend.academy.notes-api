@@ -1,0 +1,63 @@
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: "Lint and Scan Dependencies"
+    defaults:
+      run:
+        shell: bash
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.1.0
+
+      - name: Setup Go environment
+        uses: actions/setup-go@v5.2.0
+        with:
+          go-version: "1.22.7"
+
+      - name: Install OSV Scanner
+        run: go install github.com/google/osv-scanner/cmd/osv-scanner@v1
+
+      - name: Scan Dependencies
+        run: npm ci && npm run scan
+
+      - name: Format And Lint
+        run: npm run format && npm run lint
+
+  smoke_test:
+    name: "Smoke Test Container Of Image before Push to Registry"
+    runs-on: ubuntu-22.04
+    needs:
+      - build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Setting .env file for Docker Compose
+        run: |
+          # Commands for .env.dev.api
+          echo "PORT=${{secrets.PORT}}" >> .env.dev.api
+          echo "HOST=${{secrets.HOST}}" >> .env.dev.api
+          # Commands for .env.dev.smoketest
+          echo "BASE_URL=${{BASE_URL}}" >> .env.dev.smoketest
+
+      - name: Smoke Test Auth API
+        run: docker compose -f smoke.docker-compose.yml up --exit-code-from smoketest
