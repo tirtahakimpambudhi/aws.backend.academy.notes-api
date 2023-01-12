@@ -1,0 +1,39 @@
+{
+  "name": "backend-class.notes-api",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start:dev": " HOST='localhost' PORT=5000 node src/index.js",
+    "start:prod": "HOST='0.0.0.0' PORT=3000 node src/index.js",
+    "test:api": "newman run tests/end2end/notes-api-test.postman_collection.json --environment tests/end2end/notes-api-test.postman_environment.json\n",
+    "test": "mocha tests/...",
+    "format": "prettier --write \"{src,test}/**/*.{js,ts}\"",
+    "lint": "eslint src/*",
+    "test:coverage": "nyc mocha tests/*",
+    "scan": "osv-scanner -L package-lock.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "eslint": "^9.16.0",
+    "eslint-config-dicodingacademy": "^0.9.4",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.13.0",
+    "mocha": "^10.7.3",
+    "nyc": "^17.1.0",
+    "prettier": "^3.4.2"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@hapi/hapi": "^21.3.12",
+    "chai": "^5.1.2",
+    "got": "^11.8.6",
+    "joi": "^17.13.3",
+    "nodemon": "^3.1.7",
+    "uuid": "^11.0.3"
+  }
+}
