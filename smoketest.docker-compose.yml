@@ -1,0 +1,33 @@
+
+services:
+  notes_api:
+    networks:
+      - network_notes_api
+    container_name: "notes_api"
+    build:
+      context: ./
+      args:
+        username: "notes_api_user"
+        unique_id: 241231
+    env_file:
+      - ./.env.dev.api
+
+  smoketest:
+    networks:
+      - network_notes_api
+    depends_on:
+      - notes_api
+    container_name: "smoketest"
+    build:
+      context: ./
+      dockerfile: Dockerfile.smoketest
+      args:
+        username: "notes_api_user"
+        unique_id: 241231
+    env_file:
+      - ./.env.dev.smoketest
+
+
+networks:
+  network_notes_api:
+    name: "network_notes_api"
