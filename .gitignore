@@ -1,4 +1,4 @@
-*.postman_*.json
+
 node_modules/
 .env.*
 script/
