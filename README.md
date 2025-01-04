@@ -22,7 +22,7 @@ Ensure you have the following installed before running the project:
 1. **Clone this repository**
    ```bash
    git clone https://github.com/tirtahakimpambudhi/aws.backend.academy.notes-api.git
-   cd aws.backend.academy.demonodejs
+   cd aws.backend.academy.notes-api
    ```
 
 2. **Install dependencies**  
