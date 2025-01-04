@@ -60,4 +60,4 @@ jobs:
           echo "BASE_URL=${{secrets.BASE_URL}}" >> .env.dev.smoketest
 
       - name: Smoke Test Auth API
-        run: docker compose -f smoke.docker-compose.yml up --exit-code-from smoketest
+        run: docker compose -f smoketest.docker-compose.yml up --exit-code-from smoketest
