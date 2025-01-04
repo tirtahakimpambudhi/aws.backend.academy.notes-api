@@ -57,7 +57,7 @@ jobs:
           echo "PORT=${{secrets.PORT}}" >> .env.dev.api
           echo "HOST=${{secrets.HOST}}" >> .env.dev.api
           # Commands for .env.dev.smoketest
-          echo "BASE_URL=${{BASE_URL}}" >> .env.dev.smoketest
+          echo "BASE_URL=${{secrets.BASE_URL}}" >> .env.dev.smoketest
 
       - name: Smoke Test Auth API
         run: docker compose -f smoke.docker-compose.yml up --exit-code-from smoketest
